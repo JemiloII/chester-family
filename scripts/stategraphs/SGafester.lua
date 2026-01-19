@@ -10,6 +10,8 @@ local events=
     CommonHandlers.OnStep(),
     CommonHandlers.OnSleep(),
     CommonHandlers.OnLocomote(false,true),
+    CommonHandlers.OnHop(),
+    CommonHandlers.OnFreeze(),
     EventHandler("attacked", function(inst)
         if inst.components.health and not inst.components.health:IsDead() then
             inst.sg:GoToState("hit")
@@ -220,15 +222,18 @@ CommonStates.AddWalkStates(states, {
 
 CommonStates.AddSleepStates(states,
 {
-    starttimeline = 
+    starttimeline =
     {
         TimeEvent(0*FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/creatures/chester/close") end)
     },
-    waketimeline = 
+    waketimeline =
     {
         TimeEvent(0*FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/creatures/chester/open") end)
     },
 })
+
+CommonStates.AddHopStates(states, true, { pre = "walk_loop", loop = "walk_loop", pst = "walk_loop" })
+CommonStates.AddFrozenStates(states)
 
 CommonStates.AddSimpleState(states, "hit", "hit", {"busy"})
 

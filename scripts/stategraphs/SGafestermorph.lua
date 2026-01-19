@@ -9,6 +9,8 @@ local events=
     CommonHandlers.OnStep(),
     CommonHandlers.OnSleep(),
     CommonHandlers.OnLocomote(false,true),
+    CommonHandlers.OnHop(),
+    CommonHandlers.OnFreeze(),
     EventHandler("attacked", function(inst)
         if inst.components.health and not inst.components.health:IsDead() then
             inst.sg:GoToState("hit")
@@ -18,28 +20,28 @@ local events=
     EventHandler("death", function(inst) inst.sg:GoToState("death") end),
     EventHandler("entershield", function(inst) inst.sg:GoToState("shield") end),
     EventHandler("exitshield", function(inst) inst.sg:GoToState("shield_end") end),
-    EventHandler("attacked", function(inst) 
-        if not inst.components.health:IsDead() then 
+    EventHandler("attacked", function(inst)
+        if not inst.components.health:IsDead() then
             if inst:HasTag("spitster") then
-                if not inst.sg:HasStateTag("attack") then 
+                if not inst.sg:HasStateTag("attack") then
                     inst.sg:GoToState("hit")
                 end
             elseif not inst.sg:HasStateTag("shield") then
                 inst.sg:GoToState("hit")
             end
-        end 
+        end
     end),
-    EventHandler("doattack", function(inst, data) 
-        if not inst.components.health:IsDead() and not inst.sg:HasStateTag("busy") then 
+    EventHandler("doattack", function(inst, data)
+        if not inst.components.health:IsDead() and not inst.sg:HasStateTag("busy") then
             if inst:HasTag("spister") then
-                inst.sg:GoToState("attack", data.target) 
+                inst.sg:GoToState("attack", data.target)
             elseif inst:HasTag("spitster") and
                 data.target:IsValid() and
                 inst:GetDistanceSqToInst(data.target) > TUNING.SPIDER_SPITTER_MELEE_RANGE*TUNING.SPIDER_SPITTER_MELEE_RANGE then
                 --Do spit attack
                 inst.sg:GoToState("spitter_attack", data.target)
             end
-        end 
+        end
     end),
 }
 
@@ -327,15 +329,18 @@ CommonStates.AddWalkStates(states, {
 
 CommonStates.AddSleepStates(states,
 {
-    starttimeline = 
+    starttimeline =
     {
         TimeEvent(0*FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/creatures/chester/close") end)
     },
-    waketimeline = 
+    waketimeline =
     {
         TimeEvent(0*FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/creatures/chester/open") end)
     },
 })
+
+CommonStates.AddHopStates(states, true, { pre = "walk_loop", loop = "walk_loop", pst = "walk_loop" })
+CommonStates.AddFrozenStates(states)
 
 CommonStates.AddSimpleState(states, "hit", "hit", {"busy"})
 
