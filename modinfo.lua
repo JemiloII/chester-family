@@ -1,8 +1,8 @@
 name = "Chester Family"
-description = "Adds several new chesters to the game with options to configure them."
+description = "Adds several new chesters to the game with options to configure them. \nThis mod is based on the one made by Kooky112 here: https://steamcommunity.com/sharedfiles/filedetails/?id=407977022 \n\nI've implemented some new configurations and fixed the new chesters from going invisible when looking at their backs.\n\n If you want to code a new chester, PRs are welcome at the codebase here: https://github.com/jemiloii/chester-family \n\nRoadmap 2026:\n - Afester embarking on Boats\n - Increase Custom Bone Sizes\n - Big Daddy Configs\n - New Chester Variants\n\nCredits: Shibiko, Kooky112, Afetogbo, Ysovuka, Kzisor"
 author = "Shibiko, Kooky112, Afetogbo, Ysovuka, Kzisor"
-version = "6.0.1"
-forumthread = ""
+version = "6.2.5"
+forumthread = "https://github.com/jemiloii/chester-family"
 api_version = 10
 
 dst_compatible = true
@@ -59,7 +59,7 @@ configuration_options = {
 
     {
         name = "chilltime",
-        label = "Perish Time in Ice Bluster",
+        label = "Perish Time",
         hover = "Here we change the spoilage time of our food.",
         options = {
             { description = "Fridge", data = .5, hover = "Makes the freezer the same as icebox" },
@@ -73,7 +73,7 @@ configuration_options = {
 
     {
         name = "bluester_storage_size_default",
-        label = "Bluester's default storage size",
+        label = "Storage Size (Default)",
         hover = "Change the default storage size of Bluester",
         options = {
             { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
@@ -88,7 +88,7 @@ configuration_options = {
 
     {
         name = "bluester_storage_size_shadow",
-        label = "Bluester's default shadow storage size",
+        label = "Storage Size (Shadow)",
         hover = "Change the default storage size of shadow Bluester",
         options = {
             { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
@@ -103,7 +103,7 @@ configuration_options = {
 
     {
         name = "bluester_storage_size_freezer",
-        label = "Bluester's default freezer storage size",
+        label = "Storage Size (Freezer)",
         hover = "Change the default storage size of Freezer Bluester",
         options = {
             { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
@@ -141,7 +141,7 @@ configuration_options = {
 
     {
         name = "daddy_storage_size_default",
-        label = "Big Daddy's default storage size",
+        label = "Storage Size",
         hover = "Change the default storage size of Big Daddy",
         options = {
             { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
@@ -178,6 +178,43 @@ configuration_options = {
     },
 
     {
+        name = "dubster_sanity_enabled",
+        label = "Sanity Aura",
+        hover = "Enable positive sanity aura for Dubster (Partychester).",
+        options = {
+            { description = "Enable", data = true, hover = "Dubster will provide sanity." },
+            { description = "Disable", data = false, hover = "No sanity effect." },
+        },
+        default = true,
+    },
+
+    {
+        name = "dubster_night_light_enabled",
+        label = "Night Light",
+        hover = "Enable automatic light at night for Dubster.",
+        options = {
+            { description = "Enable", data = true, hover = "Dubster glows at night." },
+            { description = "Disable", data = false, hover = "No night light." },
+        },
+        default = true,
+    },
+
+    {
+        name = "dubster_storage_size_default",
+        label = "Storage Size",
+        hover = "Change the storage size of Dubster",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Default (9)", data = 9, hover = "Default with 9 storage size" },
+            { description = "Large (12)", data = 12, hover = "Large with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 12
+    },
+
+    {
         name = "",
         label = "------------------------------------------",
         hover = "",
@@ -198,6 +235,88 @@ configuration_options = {
             { description = "Disable", data = false, hover = "This will disable Afester." },
         },
         default = true,
+    },
+
+    {
+        name = "afester_sluster_sanity_enabled",
+        label = "Sluster Sanity Aura",
+        hover = "Enable positive sanity aura for Sluster (Afester morph with lightbulbs).",
+        options = {
+            { description = "Enable", data = true, hover = "Sluster will provide sanity." },
+            { description = "Disable", data = false, hover = "No sanity effect." },
+        },
+        default = true,
+    },
+
+    {
+        name = "afester_spitster_sanity_enabled",
+        label = "Spitster Sanity Drain",
+        hover = "Enable negative sanity aura for Spitster (Afester morph with spider eggs).",
+        options = {
+            { description = "Enable", data = true, hover = "Spitster will drain sanity." },
+            { description = "Disable", data = false, hover = "No sanity effect." },
+        },
+        default = true,
+    },
+
+    {
+        name = "afester_storage_size_default",
+        label = "Storage Size (Default)",
+        hover = "Change the default storage size of base Afester",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Default (9)", data = 9, hover = "Default with 9 storage size" },
+            { description = "Large (12)", data = 12, hover = "Large with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 9
+    },
+
+    {
+        name = "afester_storage_size_sluster",
+        label = "Storage Size (Sluster)",
+        hover = "Change the storage size of Sluster (shadowchester container)",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Normal (9)", data = 9, hover = "Normal with 9 storage size" },
+            { description = "Default (12)", data = 12, hover = "Default with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 12
+    },
+
+    {
+        name = "afester_storage_size_spister",
+        label = "Storage Size (Spister)",
+        hover = "Change the storage size of Spister",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Default (9)", data = 9, hover = "Default with 9 storage size" },
+            { description = "Large (12)", data = 12, hover = "Large with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 9
+    },
+
+    {
+        name = "afester_storage_size_spitster",
+        label = "Storage Size (Spitster)",
+        hover = "Change the storage size of Spitster",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Default (9)", data = 9, hover = "Default with 9 storage size" },
+            { description = "Large (12)", data = 12, hover = "Large with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 9
     },
 
     {
@@ -224,6 +343,55 @@ configuration_options = {
     },
 
     {
+        name = "cavester_sanity_enabled",
+        label = "Sanity Aura",
+        hover = "Enable positive sanity aura for Cavester.",
+        options = {
+            { description = "Enable", data = true, hover = "Cavester will provide sanity." },
+            { description = "Disable", data = false, hover = "No sanity effect." },
+        },
+        default = true,
+    },
+
+    {
+        name = "cavester_night_light_enabled",
+        label = "Night Light",
+        hover = "Enable automatic light at night for Cavester.",
+        options = {
+            { description = "Enable", data = true, hover = "Cavester glows at night." },
+            { description = "Disable", data = false, hover = "No night light." },
+        },
+        default = true,
+    },
+
+    {
+        name = "cavester_storage_size_default",
+        label = "Storage Size",
+        hover = "Change the storage size of Cavester",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Normal (9)", data = 9, hover = "Normal with 9 storage size" },
+            { description = "Default (12)", data = 12, hover = "Default with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 12
+    },
+
+    {
+        name = "",
+        label = "------------------------------------------",
+        hover = "",
+        options = {
+            { description = "------------", data = 0 },
+            { description = "------------", data = 1 },
+            { description = "------------", data = 2 },
+        },
+        default = 1,
+    },
+
+    {
         name = "stovester_config",
         label = "Enable Stovester",
         hover = "Stovester likes cooking food.",
@@ -232,6 +400,32 @@ configuration_options = {
             { description = "Disable", data = false, hover = "This will disable Stovester." },
         },
         default = true,
+    },
+
+    {
+        name = "stovester_sanity_enabled",
+        label = "Sanity Aura",
+        hover = "Enable positive sanity aura for Stovester.",
+        options = {
+            { description = "Enable", data = true, hover = "Stovester will provide sanity." },
+            { description = "Disable", data = false, hover = "No sanity effect." },
+        },
+        default = true,
+    },
+
+    {
+        name = "stovester_storage_size_default",
+        label = "Storage Size",
+        hover = "Change the storage size of Stovester",
+        options = {
+            { description = "Tiny (4)", data = 4, hover = "Tiny with 4 storage size" },
+            { description = "Small (6)", data = 6, hover = "Small with 6 storage size" },
+            { description = "Normal (9)", data = 9, hover = "Normal with 9 storage size" },
+            { description = "Default (12)", data = 12, hover = "Default with 12 storage size" },
+            { description = "Huge (15)", data = 15, hover = "Huge with 15 storage size" },
+            { description = "Massive (18)", data = 18, hover = "Massive with 18 storage size" },
+        },
+        default = 12
     },
     ---------------------------------------------------------------------------------------------------------------
     ---------------------------------------------------------------------------------------------------------------

@@ -35,7 +35,8 @@ local sounds =
     boing = "dontstarve/creatures/chester/boing",
     lick = "dontstarve/creatures/chester/lick",
 }
- 
+
+local modname = KnownModIndex:GetModActualName("Chester Family")
 local WAKE_TO_FOLLOW_DISTANCE = 14
 local SLEEP_NEAR_LEADER_DISTANCE = 7
  
@@ -252,7 +253,7 @@ local function create_bluechester()
     inst.MiniMapEntity:SetIcon("chester.png")
     inst.MiniMapEntity:SetCanUseCache(false)
  
-    inst.AnimState:SetBank("chester") -- no need to cahnge this... thanks for the tip serp
+    inst.AnimState:SetBank("bluechester")
     inst.AnimState:SetBuild("bluechester")
     
  

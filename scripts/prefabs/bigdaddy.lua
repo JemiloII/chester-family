@@ -2,6 +2,7 @@ require "prefabutil"
 local brain = require "brains/chesterbrain"
 require "stategraphs/SGchester"
 
+local modname = KnownModIndex:GetModActualName("Chester Family")
 local WAKE_TO_FOLLOW_DISTANCE = 14
 local SLEEP_NEAR_LEADER_DISTANCE = 7
 
@@ -91,7 +92,7 @@ local function fn()
 	inst.MiniMapEntity:SetIcon("chester.png")
 	inst.MiniMapEntity:SetCanUseCache(false)
 
-	inst.AnimState:SetBank("chester")
+	inst.AnimState:SetBank("bdaddy")
 	inst.AnimState:SetBuild("bdaddy")
 
 	inst.DynamicShadow:SetSize(2, 1.5)
@@ -100,14 +101,14 @@ local function fn()
 
 	inst.Transform:SetFourFaced()
 
+	inst.entity:SetPristine()
+
 	if not TheWorld.ismastersim then
 		inst:DoTaskInTime(0, function()
 			inst.replica.container:WidgetSetup("daddysbelly")
 		end)
 		return inst
 	end
-	
-	inst.entity:SetPristine()
 
 	inst:AddComponent("combat")
 	inst.components.combat.hiteffectsymbol = "chester_body"

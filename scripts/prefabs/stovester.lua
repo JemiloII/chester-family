@@ -4,6 +4,7 @@ require "prefabutil"
 local brain = require "brains/chesterbrain"
 require "stategraphs/SGchester"
 
+local modname = KnownModIndex:GetModActualName("Chester Family")
 local WAKE_TO_FOLLOW_DISTANCE = 14
 local SLEEP_NEAR_LEADER_DISTANCE = 7
 
@@ -93,12 +94,14 @@ local function create_stovester()
 	inst.MiniMapEntity:SetIcon("chester.png")
 	inst.MiniMapEntity:SetCanUseCache(false)
 	
-	inst.AnimState:SetBank("chester")
+	inst.AnimState:SetBank("stovester")
 	inst.AnimState:SetBuild("stovester")
 
 	inst.DynamicShadow:SetSize(2, 1.5)
 
 	inst.Transform:SetFourFaced()
+
+	inst.entity:SetPristine()
 
 	if not TheWorld.ismastersim then
 		--[[
@@ -108,8 +111,6 @@ local function create_stovester()
 		--]]
 		return inst
 	end
-	
-	inst.entity:SetPristine()
 
 	inst:AddComponent("combat")
 	inst.components.combat.hiteffectsymbol = "chester_body"
@@ -119,7 +120,13 @@ local function create_stovester()
 	inst.components.container:WidgetSetup("shadowchester")
 	inst.components.container.onopenfn = OnOpen
 	inst.components.container.onclosefn = OnClose
- 
+
+	local storage_size = GetModConfigData("stovester_storage_size_default", modname) or 12
+	for i = 1, storage_size do
+		inst.components.container.slots[i] = nil
+	end
+	inst.components.container.numslots = storage_size
+
     inst:AddComponent("follower")
     inst:ListenForEvent("stopfollowing", OnStopFollowing)
     inst:ListenForEvent("startfollowing", OnStartFollowing)
@@ -127,9 +134,11 @@ local function create_stovester()
 	inst:AddComponent("health")
 	inst.components.health:SetMaxHealth(TUNING.CHESTER_HEALTH)
 	inst.components.health:StartRegen(TUNING.CHESTER_HEALTH_REGEN_AMOUNT, TUNING.CHESTER_HEALTH_REGEN_PERIOD)
-	
-	inst:AddComponent("sanityaura")
-    inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+
+	if GetModConfigData("stovester_sanity_enabled", modname) then
+		inst:AddComponent("sanityaura")
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+	end
 	
 	inst:AddComponent("cooker")
 

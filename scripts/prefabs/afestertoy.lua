@@ -195,11 +195,11 @@ local function fn()
     inst.AnimState:SetBuild("afestertoy_build")
     inst.AnimState:PlayAnimation("idle_loop", true)
 
+    inst.entity:SetPristine()
+
     if not TheWorld.ismastersim then
         return inst
     end
-
-    inst.entity:SetPristine()
 
     inst:AddComponent("inventoryitem")
     inst.components.inventoryitem:SetOnPutInInventoryFn(OnPutInInventory)

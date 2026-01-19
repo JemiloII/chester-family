@@ -3,6 +3,7 @@ local brain = require "brains/chesterbrain"
 require "stategraphs/SGchester"
 require "components/combat"
 
+local modname = KnownModIndex:GetModActualName("Chester Family")
 local WAKE_TO_FOLLOW_DISTANCE = 14
 local SLEEP_NEAR_LEADER_DISTANCE = 7
 
@@ -134,6 +135,8 @@ local function create_partychester()
 
 	inst.Transform:SetFourFaced()
 
+	inst.entity:SetPristine()
+
 	if not TheWorld.ismastersim then
 		--[[
 		inst:DoTaskInTime(0, function()
@@ -142,8 +145,6 @@ local function create_partychester()
 		--]]
 		return inst
 	end
-	
-	inst.entity:SetPristine()
 
 	inst:AddComponent("combat")
 	inst.components.combat.hiteffectsymbol = "chester_body"
@@ -153,6 +154,12 @@ local function create_partychester()
 	inst.components.container:WidgetSetup("shadowchester")
 	inst.components.container.onopenfn = OnOpen
 	inst.components.container.onclosefn = OnClose
+
+	local storage_size = GetModConfigData("dubster_storage_size_default", modname) or 12
+	for i = 1, storage_size do
+		inst.components.container.slots[i] = nil
+	end
+	inst.components.container.numslots = storage_size
  
     inst:AddComponent("follower")
     inst:ListenForEvent("stopfollowing", OnStopFollowing)
@@ -161,9 +168,11 @@ local function create_partychester()
 	inst:AddComponent("health")
 	inst.components.health:SetMaxHealth(TUNING.CHESTER_HEALTH)
 	inst.components.health:StartRegen(TUNING.CHESTER_HEALTH_REGEN_AMOUNT, TUNING.CHESTER_HEALTH_REGEN_PERIOD)
-	
-	inst:AddComponent("sanityaura")
-    inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+
+	if GetModConfigData("dubster_sanity_enabled", modname) then
+		inst:AddComponent("sanityaura")
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+	end
 
 	inst:AddComponent("inspectable")
 	inst.components.inspectable:RecordViews()
@@ -200,18 +209,20 @@ local function create_partychester()
 	end, false, false, true)
 
 	inst:SetBrain(brain)
-	
+
 	inst:SetStateGraph("SGchester")
 	inst.sg:GoToState("idle")
 
-	inst:DoPeriodicTask(1, function(inst)
-    if TheWorld.state.isnight 
-    then
-    inst.Light:Enable(true)    
-    else
-    inst.Light:Enable(false)
-    end
-end)
+	if GetModConfigData("dubster_night_light_enabled", modname) then
+		inst:DoPeriodicTask(1, function(inst)
+			if TheWorld.state.isnight then
+				inst.Light:Enable(true)
+			else
+				inst.Light:Enable(false)
+			end
+		end)
+	end
+
 	return inst
 	
 end

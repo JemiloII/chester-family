@@ -4,6 +4,7 @@ local spibrain = require "brains/afestermorphbrain"
 require "stategraphs/SGafester"
 require "stategraphs/SGafestermorph"
 
+local modname = KnownModIndex:GetModActualName("Chester Family")
 local WAKE_TO_FOLLOW_DISTANCE = 14
 local SLEEP_NEAR_LEADER_DISTANCE = 7
 
@@ -130,8 +131,22 @@ local function MorphSpister(inst)
 
     inst.components.container:WidgetSetup("chester")
 
+    local storage_size = GetModConfigData("afester_storage_size_spister", modname) or 9
+    for i = 1, storage_size do
+        inst.components.container.slots[i] = nil
+    end
+    inst.components.container.numslots = storage_size
+
     if not TheWorld.ismastersim then
         return inst
+    end
+
+    inst.components.locomotor:SetAllowPlatformHopping(true)
+    if not inst.components.embarker then
+        inst:AddComponent("embarker")
+    end
+    if not inst.components.drownable then
+        inst:AddComponent("drownable")
     end
 
     inst.components.combat:SetKeepTargetFunction(KeepTargetFn)
@@ -164,6 +179,12 @@ local function MorphSluster(inst)
 
     inst.components.container:WidgetSetup("shadowchester")
 
+    local storage_size = GetModConfigData("afester_storage_size_sluster", modname) or 12
+    for i = 1, storage_size do
+        inst.components.container.slots[i] = nil
+    end
+    inst.components.container.numslots = storage_size
+
     local leader = inst.components.follower.leader
     if leader ~= nil then
         inst.components.follower.leader:MorphSlustertoy()
@@ -171,6 +192,14 @@ local function MorphSluster(inst)
 
     if not TheWorld.ismastersim then
         return inst
+    end
+
+    inst.components.locomotor:SetAllowPlatformHopping(true)
+    if not inst.components.embarker then
+        inst:AddComponent("embarker")
+    end
+    if not inst.components.drownable then
+        inst:AddComponent("drownable")
     end
 
         inst:AddComponent("lighttweener")
@@ -187,8 +216,10 @@ local function MorphSluster(inst)
         inst.components.playerprox:SetOnPlayerNear(function() inst.components.lighttweener:StartTween(nil, 5, nil, nil, nil, 0.5) light:Enable(true) end)
         inst.components.playerprox:SetOnPlayerFar(function() inst.components.lighttweener:StartTween(nil, 0, nil, nil, nil, 1) light:Enable(false) end)
 
-	inst:AddComponent("sanityaura")
-    inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+	if GetModConfigData("afester_sluster_sanity_enabled", modname) then
+		inst:AddComponent("sanityaura")
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+	end
 
     inst.AfesterState = "SLUSTER"
     inst._issluster:set(true)
@@ -203,10 +234,24 @@ local function MorphSpitster(inst)
 
     inst.components.container:WidgetSetup("chester")
 
+    local storage_size = GetModConfigData("afester_storage_size_spitster", modname) or 9
+    for i = 1, storage_size do
+        inst.components.container.slots[i] = nil
+    end
+    inst.components.container.numslots = storage_size
+
     inst:SetBrain(spibrain)
 
     if not TheWorld.ismastersim then
         return inst
+    end
+
+    inst.components.locomotor:SetAllowPlatformHopping(true)
+    if not inst.components.embarker then
+        inst:AddComponent("embarker")
+    end
+    if not inst.components.drownable then
+        inst:AddComponent("drownable")
     end
 
     inst:AddComponent("inventory")
@@ -218,8 +263,10 @@ local function MorphSpitster(inst)
     inst.components.combat:SetRetargetFunction(2, SpitRetarget)
     inst.components.combat:SetTarget(nil)
 
-	inst:AddComponent("sanityaura")
-    inst.components.sanityaura.aura = -TUNING.SANITYAURA_SMALL
+	if GetModConfigData("afester_spitster_sanity_enabled", modname) then
+		inst:AddComponent("sanityaura")
+		inst.components.sanityaura.aura = -TUNING.SANITYAURA_SMALL
+	end
 
     inst:SetBrain(spibrain)
 
@@ -383,6 +430,8 @@ local function create_afester()
 
     inst._issluster = net_bool(inst.GUID, "_issluster", "onisslusterdirty")
 
+    inst.entity:SetPristine()
+
     if not TheWorld.ismastersim then
         inst:DoTaskInTime(0, function()
         inst.replica.container:WidgetSetup("chester")
@@ -391,8 +440,6 @@ local function create_afester()
         inst:ListenForEvent("onisslusterdirty", OnIsSlusterDirty)
         return inst
     end
-
-    inst.entity:SetPristine()
 
     ------------------------------------------
 
@@ -411,13 +458,10 @@ local function create_afester()
     inst.components.locomotor.walkspeed = 6
     inst.components.locomotor.runspeed = 10
     inst.components.locomotor:SetTriggersCreep(false)
-
-    -- Allow Boarding Boats
     inst.components.locomotor:SetAllowPlatformHopping(true)
-    inst.components.locomotor.pathcaps = { ignorecreep = true, allowocean = true }
-    --inst:AddComponent("embarker")
-    --inst:AddComponent("drownable")
-    --inst.Physics:CollidesWith(COLLISION.BOATS)
+
+    inst:AddComponent("embarker")
+    inst:AddComponent("drownable")
 
     inst:AddComponent("follower")
     inst:ListenForEvent("stopfollowing", OnStopFollowing)
@@ -431,6 +475,12 @@ local function create_afester()
     inst.components.container:WidgetSetup("chester")
     inst.components.container.onopenfn = OnOpen
     inst.components.container.onclosefn = OnClose
+
+    local storage_size = GetModConfigData("afester_storage_size_default", modname) or 9
+    for i = 1, storage_size do
+        inst.components.container.slots[i] = nil
+    end
+    inst.components.container.numslots = storage_size
 
     inst:AddComponent("sleeper")
     inst.components.sleeper:SetResistance(3)

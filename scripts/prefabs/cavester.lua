@@ -2,6 +2,7 @@ require "prefabutil"
 local brain = require "brains/chesterbrain"
 require "stategraphs/SGchester"
 
+local modname = KnownModIndex:GetModActualName("Chester Family")
 local WAKE_TO_FOLLOW_DISTANCE = 14
 local SLEEP_NEAR_LEADER_DISTANCE = 7
 
@@ -97,12 +98,14 @@ local function create_cavester()
     inst.Light:SetFalloff(4)
     inst.Light:SetIntensity(.5)
 	
-	inst.AnimState:SetBank("chester")
+	inst.AnimState:SetBank("cavester")
 	inst.AnimState:SetBuild("cavester")
 
 	inst.DynamicShadow:SetSize(2, 1.5)
 
 	inst.Transform:SetFourFaced()
+
+	inst.entity:SetPristine()
 
 	if not TheWorld.ismastersim then
 		--[[
@@ -112,8 +115,6 @@ local function create_cavester()
 		--]]
 		return inst
 	end
-	
-	inst.entity:SetPristine()
 
 	inst:AddComponent("combat")
 	inst.components.combat.hiteffectsymbol = "chester_body"
@@ -123,7 +124,13 @@ local function create_cavester()
 	inst.components.container:WidgetSetup("shadowchester")
 	inst.components.container.onopenfn = OnOpen
 	inst.components.container.onclosefn = OnClose
- 
+
+	local storage_size = GetModConfigData("cavester_storage_size_default", modname) or 12
+	for i = 1, storage_size do
+		inst.components.container.slots[i] = nil
+	end
+	inst.components.container.numslots = storage_size
+
     inst:AddComponent("follower")
     inst:ListenForEvent("stopfollowing", OnStopFollowing)
     inst:ListenForEvent("startfollowing", OnStartFollowing)
@@ -131,9 +138,11 @@ local function create_cavester()
 	inst:AddComponent("health")
 	inst.components.health:SetMaxHealth(TUNING.CHESTER_HEALTH)
 	inst.components.health:StartRegen(TUNING.CHESTER_HEALTH_REGEN_AMOUNT, TUNING.CHESTER_HEALTH_REGEN_PERIOD)
-	
-	inst:AddComponent("sanityaura")
-    inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+
+	if GetModConfigData("cavester_sanity_enabled", modname) then
+		inst:AddComponent("sanityaura")
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL
+	end
 
 	inst:AddComponent("inspectable")
 	inst.components.inspectable:RecordViews()
@@ -170,18 +179,20 @@ local function create_cavester()
 	end, false, false, true)
 
 	inst:SetBrain(brain)
-	
+
 	inst:SetStateGraph("SGchester")
 	inst.sg:GoToState("idle")
 
-	inst:DoPeriodicTask(1, function(inst)
-    if TheWorld.state.isnight 
-    then
-    inst.Light:Enable(true)    
-    else
-    inst.Light:Enable(false)
-    end
-end)
+	if GetModConfigData("cavester_night_light_enabled", modname) then
+		inst:DoPeriodicTask(1, function(inst)
+			if TheWorld.state.isnight then
+				inst.Light:Enable(true)
+			else
+				inst.Light:Enable(false)
+			end
+		end)
+	end
+
 	return inst
 	
 end

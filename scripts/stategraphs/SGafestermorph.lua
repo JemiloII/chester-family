@@ -1,6 +1,6 @@
 require("stategraphs/commonstates")
 
-local actionhandlers = 
+local actionhandlers =
 {
 }
 
@@ -338,7 +338,6 @@ CommonStates.AddSleepStates(states,
 })
 
 CommonStates.AddSimpleState(states, "hit", "hit", {"busy"})
-
 
 return StateGraph("SGafestermorph", states, events, "idle", actionhandlers)
 
