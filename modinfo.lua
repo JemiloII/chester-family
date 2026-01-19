@@ -1,7 +1,7 @@
 name = "Chester Family"
 description = "Adds several new chesters to the game with options to configure them. \nThis mod is based on the one made by Kooky112 here: https://steamcommunity.com/sharedfiles/filedetails/?id=407977022 \n\nI've implemented some new configurations and fixed the new chesters from going invisible when looking at their backs.\n\n If you want to code a new chester, PRs are welcome at the codebase here: https://github.com/jemiloii/chester-family \n\nRoadmap 2026:\n - Afester embarking on Boats\n - Increase Custom Bone Sizes\n - Big Daddy Configs\n - New Chester Variants\n\nCredits: Shibiko, Kooky112, Afetogbo, Ysovuka, Kzisor"
 author = "Shibiko, Kooky112, Afetogbo, Ysovuka, Kzisor"
-version = "6.2.5"
+version = "6.3.0"
 forumthread = "https://github.com/jemiloii/chester-family"
 api_version = 10
 
