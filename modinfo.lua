@@ -25,7 +25,7 @@ If you want to code a new chester, PRs are welcome at the codebase here: https:/
   - Kzisor
 ]]
 author = "Shibiko, Kooky112, Afetogbo, Ysovuka, Kzisor"
-version = "6.3.0"
+version = "6.3.1"
 forumthread = "https://github.com/jemiloii/chester-family"
 api_version = 10
 
