@@ -92,14 +92,14 @@ end
 
 local function RebindAfester(inst, afester)
     if not TheWorld.ismastersim then
-        return false
+        return inst
     end
     afester = afester or TheSim:FindFirstEntityWithTag("afester")
-    if afester ~= nil and afester.components.follower ~= nil then
+    if afester ~= nil then
         inst.AnimState:PlayAnimation("idle_loop", true)
         Alive(inst)
-        inst:ListenForEvent("death", function() 
-		    StartRespawn(inst, TUNING.CHESTER_RESPAWN_TIME) 
+        inst:ListenForEvent("death", function()
+		    StartRespawn(inst, TUNING.CHESTER_RESPAWN_TIME)
 		end, afester)
         if afester.components.follower.leader ~= inst then
             afester.components.follower:SetLeader(inst)
